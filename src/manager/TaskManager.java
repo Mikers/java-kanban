@@ -23,10 +23,6 @@ public class TaskManager implements TaskManagerInterface {
         this.subtasks = new HashMap<>();
     }
 
-    private int generateId() {
-        return nextId++;
-    }
-
     public List<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
     }
@@ -66,12 +62,6 @@ public class TaskManager implements TaskManagerInterface {
 
     public Subtask getSubtaskById(int id) {
         return subtasks.get(id);
-    }
-
-    private int assignIdAndStore(Task task) {
-        int id = generateId();
-        task.setId(id);
-        return id;
     }
 
     public int createTask(Task task) {
@@ -183,6 +173,16 @@ public class TaskManager implements TaskManagerInterface {
             }
         }
         return epicSubtasks;
+    }
+
+    private int generateId() {
+        return nextId++;
+    }
+
+    private int assignIdAndStore(Task task) {
+        int id = generateId();
+        task.setId(id);
+        return id;
     }
 
     private void updateEpicStatus(Epic epic) {
