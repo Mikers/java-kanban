@@ -25,11 +25,17 @@ public class Epic extends Task {
         if (subtaskIds == null) {
             this.subtaskIds = new ArrayList<>();
         } else {
+            if (subtaskIds.contains(this.getId())) {
+                throw new IllegalArgumentException("Epic cannot contain itself as a subtask");
+            }
             this.subtaskIds = new ArrayList<>(subtaskIds);
         }
     }
 
     public void addSubtaskId(int subtaskId) {
+        if (subtaskId == this.getId()) {
+            throw new IllegalArgumentException("Epic cannot add itself as a subtask");
+        }
         subtaskIds.add(subtaskId);
     }
 
