@@ -243,20 +243,20 @@ class InMemoryTaskManagerTest {
     }
     
     @Test
-    void shouldLimitHistoryToTenTasks() {
+    void shouldNotLimitHistory() {
         for (int i = 1; i <= 12; i++) {
             Task task = new Task("Task " + i, "Description " + i);
             int id = taskManager.createTask(task);
             taskManager.getTask(id);
         }
-        
+
         List<Task> history = taskManager.getHistory();
-        
-        assertEquals(10, history.size(), "История должна содержать максимум 10 задач");
-        assertEquals("Task 3", history.get(0).getName(), 
-            "Первой в истории должна быть Task 3 (самая старая из оставшихся)");
-        assertEquals("Task 12", history.get(9).getName(), 
-            "Последней в истории должна быть Task 12 (самая новая)");
+
+        assertEquals(12, history.size(), "История должна содержать все 12 задач без ограничений");
+        assertEquals("Task 1", history.getFirst().getName(),
+            "Первой в истории должна быть Task 1");
+        assertEquals("Task 12", history.get(11).getName(),
+            "Последней в истории должна быть Task 12");
     }
     
     @Test
