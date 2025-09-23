@@ -1,6 +1,7 @@
 package manager;
 
 import model.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,20 +9,9 @@ import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private static class Node {
-        Task task;
-        Node next;
-        Node prev;
-
-        Node(Task task) {
-            this.task = task;
-        }
-    }
-
     private final Map<Integer, Node> history;
     private Node head;
     private Node tail;
-
     public InMemoryHistoryManager() {
         this.history = new HashMap<>();
     }
@@ -100,5 +90,15 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         return tasks;
+    }
+
+    private static class Node {
+        Task task;
+        Node next;
+        Node prev;
+
+        Node(Task task) {
+            this.task = task;
+        }
     }
 }
