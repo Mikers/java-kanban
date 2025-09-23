@@ -1,8 +1,8 @@
 package manager;
 
-import model.Task;
 import model.Epic;
 import model.Subtask;
+import model.Task;
 import model.TaskStatus;
 
 import java.util.ArrayList;
@@ -11,12 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
-    private int nextId = 1;
-    
     private final Map<Integer, Task> tasks;
     private final Map<Integer, Epic> epics;
     private final Map<Integer, Subtask> subtasks;
     private final HistoryManager historyManager;
+    private int nextId = 1;
 
     public InMemoryTaskManager() {
         this.tasks = new HashMap<>();
@@ -114,7 +113,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic == null) {
             throw new IllegalArgumentException("Epic with id " + subtask.getEpicId() + " not found");
         }
-        
+
         int id = assignIdAndStore(subtask);
         subtasks.put(id, subtask);
         epic.addSubtaskId(id);
@@ -142,11 +141,11 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateSubtask(Subtask subtask) {
         validateNotNull(subtask, "Subtask");
         validateExists(subtask.getId(), subtasks, "Subtask");
-        
+
         if (subtask.getId() == subtask.getEpicId()) {
             throw new IllegalArgumentException("Subtask cannot be its own epic");
         }
-        
+
         subtasks.put(subtask.getId(), subtask);
         Epic epic = epics.get(subtask.getEpicId());
         if (epic != null) {
@@ -192,7 +191,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic == null) {
             return new ArrayList<>();
         }
-        
+
         List<Subtask> epicSubtasks = new ArrayList<>();
         for (Integer subtaskId : epic.getSubtaskIds()) {
             Subtask subtask = subtasks.get(subtaskId);
@@ -251,16 +250,16 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException(typeName + " cannot be null");
         }
     }
-    
+
     private void validateExists(int id, Map<Integer, ?> storage, String typeName) {
         if (!storage.containsKey(id)) {
             throw new IllegalArgumentException(typeName + " with id " + id + " not found");
         }
     }
-    
+
     private void updateEpicStatus(Epic epic) {
         List<Integer> subtaskIds = epic.getSubtaskIds();
-        
+
         if (subtaskIds.isEmpty()) {
             epic.setStatus(TaskStatus.NEW);
             return;
